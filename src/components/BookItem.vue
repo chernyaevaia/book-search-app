@@ -1,8 +1,6 @@
 <template>
   <v-card hover="true" class="bookItem">
-    <template v-if="volumeInfo.imageLinks">
       <img :src="volumeInfo.imageLinks.thumbnail" :alt="volumeInfo.title" />
-    </template>
     <h4>{{ volumeInfo.title }}</h4>
     <v-card-subtitle>
       By

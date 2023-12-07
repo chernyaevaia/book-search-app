@@ -1,69 +1,64 @@
 <template>
-  <form class="searchPanel" @submit.prevent="searchBooks">
+  <form class="searchPanel" @submit.prevent="submit">
     <v-text-field
-      v-model="searchStr"
+      v-model="searchStrEntered"
       density="comfortable"
-      class="selectCategory"
+      class="searchInput"
       variant="outlined"
       placeholder="Search..."
-      v-on:keyup.enter="searchBooks"
     />
     <label>Select category:</label>
     <v-select
       v-model="category"
       density="comfortable"
       class="selectCategory"
-      :items="[
-        'all',
-        'Art',
-        'Biography',
-        'Computers',
-        'History',
-        'Medical',
-        'Poetry',
-        'Fiction',
-      ]"
+      :items="categories"
       variant="outlined"
     ></v-select>
-    <v-btn size="large" variant="outlined" @click="searchBooks">Search</v-btn>
-    <label>Order by:</label>
-    <v-radio-group v-model="orderBy" @change="searchBooks" inline>
+    <v-btn size="large" type="submit" variant="outlined">Search</v-btn>
+    <!-- <label>Order by:</label> -->
+    <!-- <v-radio-group v-model="orderBy" @change="submit" inline>
       <v-radio label="Relevance" value="relevance"></v-radio>
       <v-radio label="Newest" value="newest"></v-radio>
-    </v-radio-group>
+    </v-radio-group> -->
   </form>
-  <BookList :books="books"></BookList>
+  <BookList :books="booksFound"></BookList>
 </template>
-
 <script>
 import BookList from "@/components/BookList";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      books: [],
-      keyword: "",
-      orderBy: "newest",
-      category: "all",
+      orderBy: "relevance",
       maxResults: "10",
-      searchStr: "",
+      category: "",
+      categories: [
+        "all",
+        "Art",
+        "Biography",
+        "Computers",
+        "History",
+        "Medical",
+        "Poetry",
+        "Fiction",
+      ],
     };
   },
+  computed: mapGetters(["booksFound"]),
+
   methods: {
-    async searchBooks() {
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=intitle:${this.searchStr}&subject:${this.category}&orderBy=${this.orderBy}&key=AIzaSyDDbQUszd9s7Kd6i5-4LnIa053GW5YG01c`
-        );
-        const books = await response.json();
-        const booksArray = books.items;
-        this.books = booksArray;
-        console.log(books.items);
-      } catch (error) {
-        console.error(error);
-      }
+    ...mapActions(["fetchBooks"]),
+    ...mapMutations(["updateSearchStr", "updateCategory", "updateSortBy"]),
+
+    submit() {
+      this.updateSearchStr(this.searchStrEntered);
+      this.updateCategory(this.category);
+      this.fetchBooks();
     },
   },
+
   components: {
     BookList,
   },
@@ -80,6 +75,10 @@ export default {
 }
 
 .selectCategory {
+  min-width: 340px;
+}
+
+.searchInput {
   min-width: 340px;
 }
 </style>

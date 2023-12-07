@@ -10,7 +10,7 @@ import BookItem from "./BookItem";
 export default {
   props: {
     books: {
-      type: Response,
+      type: Array,
       required: true,
     },
   },
