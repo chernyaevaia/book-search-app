@@ -1,6 +1,8 @@
 <template>
-  <h1>Book Search</h1>
-  <HomePage></HomePage>
+  <div class="appContainer">
+    <h1>Book Search</h1>
+    <HomePage></HomePage>
+  </div>
 </template>
 
 <script>
@@ -11,7 +13,13 @@ export default {
     HomePage,
   },
 };
-
 </script>
 
-<style></style>
+<style scoped>
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+</style>
