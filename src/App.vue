@@ -1,15 +1,15 @@
 <template>
   <div class="appContainer">
-    <h1>Book Search</h1>
     <router-view></router-view>
   </div>
 </template>
 
-<script>
+<script></script>
 
-</script>
-
-<style scoped>
+<style>
+* {
+  box-sizing: border-box;
+}
 .appContainer {
   display: flex;
   flex-direction: column;

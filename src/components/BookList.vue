@@ -22,11 +22,11 @@ export default {
 
 <style>
 .bookList {
-  width: 100%;
   display: flex;
+  align-items: center;
+  justify-content: center;
   column-gap: 16px;
   row-gap: 16px;
-  justify-content: center;
   flex-wrap: wrap;
   padding: 20px 100px;
 }

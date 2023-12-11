@@ -7,6 +7,6 @@ export default createRouter({
   history: createWebHashHistory(),
   routes: [
     { path: "/", component: HomePage },
-    { path: "/:bookId", component: BookInfo },
+    { path: "/:bookId", component: BookInfo, props: true, }
   ],
 });
