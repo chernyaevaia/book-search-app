@@ -71,6 +71,7 @@ export default {
     return {
       orderBy: "relevance",
       category: "",
+      searchStrEntered: "",
       isLoading: false,
       categories: [
         { label: "all", value: "" },
