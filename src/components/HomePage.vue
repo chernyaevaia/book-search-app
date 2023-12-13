@@ -44,7 +44,23 @@
       </div>
     </form>
   </div>
-  <BookList :books="booksFound"></BookList>
+  <div class="resultWrapper">
+    <text-button v-if="booksNumber" class="searchResult"
+      >{{ booksNumber }} books</text-button
+    >
+    <BookList :books="booksFound"></BookList>
+  </div>
+  <div>
+    <v-progress-circular
+      v-if="isLoading"
+      class="spinner"
+      indeterminate
+      color="primary"
+      model-value="20"
+      :size="55"
+      :width="5"
+    ></v-progress-circular>
+  </div>
 </template>
 <script>
 import BookList from "@/components/BookList";
@@ -55,6 +71,7 @@ export default {
     return {
       orderBy: "relevance",
       category: "",
+      isLoading: false,
       categories: [
         { label: "all", value: "" },
         { label: "Art", value: "Art" },
@@ -67,17 +84,18 @@ export default {
       ],
     };
   },
-  computed: mapGetters(["booksFound"]),
+  computed: mapGetters(["booksFound", "booksNumber"]),
 
   methods: {
     ...mapActions(["fetchBooks"]),
     ...mapMutations(["updateSearchStr", "updateCategory", "updateSortBy"]),
 
     submit() {
+      this.isLoading = true;
       this.updateSortBy(this.orderBy);
       this.updateSearchStr(this.searchStrEntered);
       this.updateCategory(this.category);
-      this.fetchBooks();
+      this.fetchBooks().then(() => (this.isLoading = false));
     },
   },
 
@@ -100,7 +118,7 @@ export default {
   padding: 40px 0;
 }
 .searchPanel {
-  width: 60%;
+  min-width: 60%;
   display: flex;
   flex-direction: column;
   background-color: #7b9ac7;
@@ -121,11 +139,27 @@ export default {
 }
 
 .searchInput {
-  width: 240px;
+  min-width: 240px;
 }
 
 .searchBtn {
   margin-bottom: 22px;
   color: #1b2d48;
+}
+
+.resultWrapper {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.searchResult {
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.spinner {
+  margin-top: 20px;
 }
 </style>

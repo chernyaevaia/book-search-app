@@ -9,10 +9,26 @@ export const store = createStore({
         );
         const books = await response.json();
         const booksArray = books.items;
-        ctx.commit("updateBooks", booksArray);
-        this.books = booksArray;
+        const bookNumber = books.totalItems;
+        ctx.commit("updateNewBooks", booksArray);
+        ctx.commit("updateBooksNumber", bookNumber);
       } catch (error) {
         console.error(error);
+        throw new Error("Something went wrong during search");
+      }
+    },
+
+    async loadMoreBooks(ctx) {
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/books/v1/volumes?q=${this.state.searchStr}+subject:${this.state.category}&startIndex=${this.state.startIndex}&maxResults=30&orderBy=${this.state.order}`
+        );
+        const books = await response.json();
+        const booksArray = books.items;
+        ctx.commit("updateMoreBooks", booksArray);
+      } catch (error) {
+        console.error(error);
+        throw new Error("Something went wrong during loading");
       }
     },
 
@@ -26,12 +42,16 @@ export const store = createStore({
         this.bookInfo = bookInfo;
       } catch (error) {
         console.error(error);
+        throw new Error("Something went wrong when loading information");
       }
     },
   },
   mutations: {
-    updateBooks(state, books) {
+    updateNewBooks(state, books) {
       state.books = books;
+    },
+    updateMoreBooks(state, books) {
+      state.books = [...state.books, ...books];
     },
     updateBookInfo(state, bookInfo) {
       state.bookInfo = bookInfo;
@@ -48,11 +68,19 @@ export const store = createStore({
     updateSortBy(state, order) {
       state.order = order;
     },
+    updateBooksNumber(state, number) {
+      state.booksNumber = number;
+    },
+    updateStartIndex(state, index) {
+      state.startIndex = index;
+    },
   },
   state: {
     books: [],
     bookInfo: {},
     bookId: "",
+    booksNumber: null,
+    startIndex: 0,
   },
   getters: {
     booksFound(state) {
@@ -61,6 +89,9 @@ export const store = createStore({
 
     bookInfo(state) {
       return state.bookInfo;
+    },
+    booksNumber(state) {
+      return state.booksNumber;
     },
   },
 });
