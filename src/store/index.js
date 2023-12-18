@@ -8,7 +8,7 @@ export const store = createStore({
           `https://www.googleapis.com/books/v1/volumes?q=${this.state.searchStr}+subject:${this.state.category}&maxResults=30&orderBy=${this.state.order}`
         );
         const books = await response.json();
-        const booksArray = books.items;
+        const booksArray = books.totalItems === 0 ? [] : books.items;
         const bookNumber = books.totalItems;
         ctx.commit("updateNewBooks", booksArray);
         ctx.commit("updateBooksNumber", bookNumber);

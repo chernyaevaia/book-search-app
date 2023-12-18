@@ -67,7 +67,7 @@ export default {
 
   created() {
     this.updateBookId(this.$route.path.slice(1));
-    this.fetchBookInfo().then(() => (this.isLoading = false));
+    this.fetchBookInfo().finally(() => (this.isLoading = false));
   },
 };
 </script>

@@ -45,9 +45,8 @@
     </form>
   </div>
   <div class="resultWrapper">
-    <text-button v-if="booksNumber" class="searchResult"
-      >{{ booksNumber }} books</text-button
-    >
+    <div v-if="booksNumber" class="searchResult">{{ booksNumber }} books</div>
+    <div v-else class="searchResult">No results</div>
     <BookList :books="booksFound"></BookList>
   </div>
   <div>
@@ -96,7 +95,7 @@ export default {
       this.updateSortBy(this.orderBy);
       this.updateSearchStr(this.searchStrEntered);
       this.updateCategory(this.category);
-      this.fetchBooks().then(() => (this.isLoading = false));
+      this.fetchBooks().finally(() => (this.isLoading = false));
     },
   },
 

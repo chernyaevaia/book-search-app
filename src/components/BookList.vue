@@ -54,7 +54,7 @@ export default {
     loadBooks() {
       this.isLoading = true;
       this.updateStartIndex((this.currentPage + 1) * 30);
-      this.loadMoreBooks().then(() => (this.isLoading = false));
+      this.loadMoreBooks().finally(() => (this.isLoading = false));
     },
   },
 };

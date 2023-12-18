@@ -1,18 +1,23 @@
 <template>
   <RouterLink style="text-decoration: none" :to="`/${book.id}`">
-    <v-card height="100%" hover="true" class="bookItem" @click="updateBookId(book.id)">
-      <v-card-subtitle v-if="bookCategory"
-        >Category: {{ bookCategory }}
-      </v-card-subtitle>
+    <v-card
+      height="100%"
+      hover="true"
+      class="bookItem"
+      @click="updateBookId(book.id)"
+    >
       <img
-        v-if="volumeInfo.imageLinks.thumbnail"
+        v-if="volumeInfo.imageLinks"
         :src="volumeInfo.imageLinks.thumbnail"
         :alt="volumeInfo.title"
       />
+      <div v-if="bookCategory" class="bookCategory">
+        Category: {{ bookCategory }}
+      </div>
       <h4>{{ volumeInfo.title }}</h4>
-      <v-card-subtitle>
+      <div class="bookAuthor">
         {{ bookAuthor }}
-      </v-card-subtitle>
+      </div>
     </v-card>
   </RouterLink>
 </template>
@@ -64,9 +69,20 @@ export default {
   flex-direction: column;
   row-gap: 10px;
   align-items: center;
+  overflow-wrap: break-word;
   justify-content: start;
   text-align: center;
   width: 260px;
   padding: 16px;
+}
+
+.bookCategory {
+  font-size: 14px;
+  text-align: center;
+  color: gray;
+}
+
+.bookAuthor {
+  font-style: italic;
 }
 </style>
